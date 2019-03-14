@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en,zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0,initial-scale=1.0">
+	<title>life</title>
+	<link href="img/life_icon.png" rel="shortcut icon"/>
+	<script src="jquery/jquery-3.2.1.min.js"></script>
+
+	<style>
+	html{
+		font-size:2.2vmin;
+	}
+	*,::after,::before{
+		margin:0;
+		padding:0;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-webkit-tap-highlight-color:transparent;
+	}
+	#audio_button{
+		width:5%;
+		height:5%;
+		position:absolute;
+		right:1%;
+		top:85%;
+		background:coral;
+		z-index: 100000;
+		border-radius:100%;
+		text-align:center;
+		line-height:230%;
+		cursor:pointer;
+		color:#fff;
+		box-shadow:0px 0px 10px 1px coral;
+	}
+	#audio_button:hover{
+		color:#ccc;
+		box-shadow:0px 0px 50px 1px #ccc;
+	}
+	#life_over{
+		width:100%;
+		height:100%;
+		background:black;
+		position:absolute;
+		z-index: 100000;
+		/*display:none;*/
+	}
+	#life_over > .uptoyou_l{
+		width:50%;
+		height:50%;
+		position:absolute;
+		top:25%;
+		left:25%;
+		border-radius:20px;
+		box-shadow:0px 0px 200px 10px red;
+		display:none;
+	}
+	#life_over > .uptoyou_l > h1{
+		margin-top:2%;
+		font-family:"华文行楷";
+		width:100%;
+		text-align:center;
+		color:red;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	#life_over > .uptoyou_l >.uptoyou_can{
+		width:65%;
+		height:70%;
+		position:absolute;
+		left:17.5%;
+		top:15%;
+		border-radius: 20px;
+		overflow:hidden;
+		text-align:center;
+		line-height: 100px;
+		cursor:pointer;
+		z-index:100;
+	}
+	#life_over > .uptoyou_l > .uptoyou_repaint{
+		width:10%;
+		height:10%;
+		display:block;
+		position: absolute;
+		bottom:2%;
+		left:59%;
+		cursor:pointer;
+		outline:none;
+		border:none;
+		background:red;
+		color:#ccc;
+		-webkit-appearance:none;
+		border-radius:10px;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	#life_over > .uptoyou_l > .uptoyou_repaintL{
+		width:10%;
+		height:10%;
+		display:block;
+		position: absolute;
+		bottom:2%;
+		left:31%;
+		cursor:pointer;
+		outline:none;
+		border:none;
+		background:red;
+		color:#fff;
+		-webkit-appearance:none;
+		border-radius:10px;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	#life_over > .uptoyou_l > button:hover{
+	box-shadow:0px 0px 200px 10px yellow;
+	}
+	#life_over > .OverGet{
+		position:absolute;
+		right:0;
+		top:2%;
+		color:red;
+		text-align:right;
+		display:none;
+		
+	}
+	#life_over > .OverGet > span{
+		position:relative;
+		color:red;
+		display:inline;
+		font-size:1rem;
+		box-shadow:0px 0px 20px 1px blue;
+		border-radius:100%;
+	}
+	#life_over > .overLife{
+		text-align:right;
+		position:absolute;
+		width:100%;
+		top:95%;
+		color:red;
+		font-size:1rem;
+		display:none;
+		text-align:center;
+	}
+	#life_over > .overLife > span{
+		box-shadow:0px 0px 20px 1px blue;
+		border-radius:100%;
+	}
+	#life_over > span{
+		position:absolute;
+		display:block;
+		width:100%;
+		text-align:center;
+		top:40%;
+		font-size:5rem;
+		color:blue;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+	}
+	#life_over > p{
+		position:absolute;
+		top:2%;
+		overflow:hidden;
+		display:inline;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		text-align:center;
+		color:red;
+		box-shadow:0px 0px 20px 1px blue;
+	}
+	#life_over > .start{
+		width:14%;
+		height:20%;
+		position:absolute;
+		text-align:center;
+		top:40%;
+		left:43%;
+		color:red;
+		font-size: 6rem;
+		border:10px groove red;
+		border-radius:100%;
+		line-height:100%;
+		box-shadow:0px 0px 200px 10px red;
+		display:none;
+	}
+	#life_game{
+		width:100vmax;
+		height:100vmin;
+		background:coral;
+		position: relative;
+		overflow:hidden;
+	}
+	#life_game > .money{
+		width:30%;
+		height:5%;
+		position:absolute;
+		font-size:1.5rem;
+		right:-0.5%;
+		top:1%;
+		text-align:center;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		z-index: 2;
+	}
+	#life_game > .money > img{
+		width:16%;
+		height:100%;
+		position:absolute;
+	}
+	#life_game > .money > span:nth-of-type(1){
+		color:yellow;
+		margin-left:20%;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+	}
+	#life_game > .money > span:nth-of-type(2){
+		color:yellow;
+	}
+	#life_game > .lifeTime{
+		width:18%;
+		height:5%;
+		position:absolute;
+		font-size:1.5rem;
+		left:0.5%;
+		top:1%;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		text-align:center;
+		z-index: 2;
+	}
+	#life_game > .lifeTime > span:nth-child(1){
+		color:green;
+	}
+	#life_game > .imgM{
+		width:100vmax;
+		height:90vmin;
+		position:relative;
+	}
+	#life_game > .imgM > .imgFir{
+		display:block;
+		height:100%;
+		width:100%;
+
+	}
+	#life_game > .imgM > .wordFir{
+		position:absolute;
+		left:55%;
+		top:78.5%;
+		font-weight:bold;
+		cursor:pointer;
+	}
+	#life_game > .imgM > .wordFir:hover{
+		color:red;
+		font-weight:bold;
+	}
+	#life_game > .imgM > .duM{
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		display:none;
+		z-index:3;
+	}
+
+	#life_game > .imgM > .duM > .bgB{
+		position:absolute;
+		width:100%;
+		height:100%;
+		background:black;
+		opacity:0.8;
+	}
+	#life_game > .imgM > .duM > .duRoom{
+		width:80%;
+		height:80%;
+		position:absolute;
+		top:5%;
+		left:10%;
+		background:#000;
+		box-shadow:0px 0px 50px 1px green;
+		overflow:hidden;
+	}
+	#life_game > .imgM > .duM > .duRoom > .getM{
+		width:23%;
+		height:15%;
+		top:35%;
+		left:5%;
+		position:absolute;
+		text-align:center;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		color:yellow;
+		z-index: 8;
+		display:none;
+	}
+	#life_game > .imgM > .duM > .duRoom > .getM > h3{
+		color:red;
+		margin-bottom:1%;
+		margin-top:1%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .end{
+		width:23%;
+		height:15%;
+		position:absolute;
+		left:5%;
+		top:20%;
+		box-shadow:0px 0px 150px 10px red;
+		line-height:10vmin;
+		color:red;
+		font-size:2.2rem;
+		border-radius:100px;
+		text-align:center;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		z-index: 8;
+		display:none;
+	}
+	#life_game > .imgM > .duM > .duRoom > .time{
+		width:30%;
+		height:18%;
+		position:absolute;
+		left:1%;
+		top:1%;
+		line-height:10vmin;
+		font-size:1.5rem;
+		color:blue;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	#life_game > .imgM > .duM > .duRoom > .katong{
+		width:30%;
+		top:20%;
+		height:80%;
+		position:absolute;
+		background:#ccc;
+		background:url("img/katong.gif") no-repeat;
+		background-size:100% 100%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .time >:nth-of-type(2){
+		color:red;
+		font-size:3rem;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	#life_game > .imgM > .duM > .duRoom > .back{
+		width:9%;
+		height:10%;
+		position:absolute;
+		bottom:1%;
+		right:1%;
+		background:red;
+		outline:none;
+		border:none;
+		-webkit-appearance:none;
+		font-size:1.5rem;
+		color:green;
+		border-radius:50px;
+		cursor:pointer;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	#life_game > .imgM > .duM > .duRoom > .back:hover{
+		color:#fff;
+		box-shadow: 0px 0px 100px 1px blue;
+	}
+
+	/*赌场中部的底部*/
+	#life_game > .imgM > .duM > .duRoom > .inputM{
+		position:absolute;
+		width:35%;
+		height:39%;
+		left:35%;
+		top:60%;
+		box-shadow:0px 0px 5px 1px blue;
+	}
+
+	/*赌场中部提交按钮一块*/
+	#life_game > .imgM > .duM > .duRoom > .inputM p{
+		width:100%;
+		height:40%;
+		margin-top:3%;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		position:relative;
+	}
+
+
+	#life_game > .imgM > .duM > .duRoom > .inputM p > .sec{
+		width:40%;
+		height:80%;
+		outline:none;
+		border:none;
+		-webkit-appearance:none;
+		border-radius:50px;
+		font-size:2.2rem;
+		color:#fff;
+		background:red;
+		cursor:pointer;
+		position:absolute;
+		top:2%;
+		left:55%;
+		line-height:170%;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+	}
+
+/*输入押注金额部分*/
+	#life_game > .imgM > .duM > .duRoom > .inputM > p > .fir{
+		width:35%;
+		height:30%;
+		display:block;
+		position:absolute;
+		top:26.5%;
+		left:6%;
+		padding-left:5%;
+		color:yellow;
+		border:none;
+		outline:none;
+		-webkit-appearance:none;
+		border-radius:20px;
+		background:red;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		/*display:none;*/
+	}
+ 	#life_game > .imgM > .duM > .duRoom > .inputM > p > .warn{
+ 		width:44%;
+ 		height:30%;
+ 		display:block;
+ 		position:absolute;
+ 		top:28%;
+ 		color:red;
+ 		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		margin-left:0.5%;
+		display:none;
+ 	}
+ 	#life_game > .imgM > .duM > .duRoom > .inputM > p > .warn > span{
+ 		display:block;
+ 		width:69%;
+ 		height:100%;
+ 		position:absolute;
+ 		top:0;
+ 		left:33%;
+ 		color:yellow;
+ 		text-align:center;
+ 		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		/*background:red;*/
+ 	}
+	/*输入押注金额部分的“金”部分*/
+	#life_game > .imgM > .duM > .duRoom > .inputM > p > span{
+		position:absolute;
+		color:yellow;
+		top:28%;
+		left:45%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .inputM p > .sec:hover{
+		opacity:0.5;
+	}
+
+	/*赌场选择押注类型那一块；*/
+	#life_game > .imgM > .duM > .duRoom > .inputM > .choose{
+		width:80%;
+		height:40%;
+		margin-left:10%;
+		margin-top:5%;
+		
+	}
+	#life_game > .imgM > .duM > .duRoom > .inputM > .choose span{
+		font-size:3rem;
+		border-radius:100%;
+		box-shadow:0px 0px 10px 1px blue;
+		margin-left:7%;
+		color:#fff;
+		cursor:pointer;
+		display:block;
+		width:20%;
+		float:left;
+		margin-top:2.5%;
+		text-align:center;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	#life_game > .imgM > .duM > .duRoom > .inputM > .choose span:nth-of-type(3){
+		width:33%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .inputM > .choose span:hover{
+		box-shadow:0px 0px 10px 1px red;
+	}
+
+	/*赌场中间的中间部分*/
+	#life_game > .imgM > .duM > .duRoom > .openT{
+		position:absolute;
+		width:35%;
+		height:30%;
+		left:35%;
+		top:30%;
+		/*box-shadow:0px 0px 300px 1px blue;*/
+		overflow:hidden;
+
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > span{
+		position:absolute;
+		top:33%;
+		left:37%;
+		font-size:2.2rem;
+		color:green;
+		overflow: hidden;
+		text-align:center;
+		text-overflow: ellipsis;
+		white-space:nowrap;
+		display:none;
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .top{
+		width:100%;
+		height:50%;
+		overflow:hidden;
+		/*display:none;*/
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .top > img{
+		width:25%;
+		height:63%;
+		display:block;
+		position:absolute;
+		top:-8%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .top > img:nth-of-type(1){
+		left:6%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .top > img:nth-of-type(2){
+		left:38%;
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .top > img:nth-of-type(3){
+		left:70%;
+		z-index: 2;
+	}
+	/*666部分*/
+	#life_game > .imgM > .duM > .duRoom > .openT > .bottom{
+		width:100%;
+		height:50%;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow:auto;
+		margin-left:2%;
+
+		/*display:none;*/
+	}
+	#life_game > .imgM > .duM > .duRoom > .openT > .bottom > span{
+		font-size:3rem;
+		box-shadow:0px 0px 50px 1px red;
+		border-radius:100%;
+		color:yellow;
+		display:block;
+		float:left;
+		width:30%;
+		margin:;
+		margin-left:2%;
+		margin-top:2.5%;
+		text-align:center;
+	}
+	
+	#life_game > .imgM > .duM > .duRoom > .personM{
+		position:absolute;
+		width:35%;
+		height:30%;
+		left:35%;
+		/*box-shadow:0px 0px 200px 1px yellow;*/
+		/*overflow:hidden;*/
+	}
+
+	#life_game > .imgM > .duM > .duRoom > .personM > .theEnd{
+		width:100%;
+		height:100%;
+		position:absolute;
+		background:url("img/theEnd.jpg") no-repeat;
+		background-size:100% 100%;
+		text-align:center;
+		overflow:hidden;
+		box-shadow: 0px 0px 100px 1px yellow;
+		display:none;
+	}
+	
+	#life_game > .imgM > .duM > .duRoom > .personM > .theEnd span{
+		color:yellow;
+		font-size:6rem;
+		font-family:"华文行楷";
+		position:absolute;
+		top:25%;
+		left:35%;
+		border-radius:50px;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM >.person{
+		width:100%;
+		height:100%;
+		display:block;
+		position:absolute;
+		display:none;
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM > ul{
+		width:100%;
+		height:100%;
+		/*border:1px solid #ccc;*/
+		position:absolute;
+		list-style: none;
+
+		/*display:none;*/
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM > ul > div{
+		position:absolute;
+		width:100%;
+		top:33%;
+		box-shadow:0px 0px 110px 20px #fff;
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM > ul > p{
+		color:#fff;
+		font-size:2rem;
+		width:100%;
+		margin-top:6%;
+		text-align:center;
+		overflow:hidden;
+		display:inline-block;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		font-weight:bold;
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM > ul > li{
+		position:relative;
+		width:33.3333%;
+		height:50%;
+		float:right;
+	}
+	#life_game > .imgM > .duM > .duRoom > .personM > ul > li >img{
+		position:absolute;
+		display:block;
+		width:40%;
+		height:35%;
+		top:35%;
+		left:30%;
+	}
+	#life_game > .imgM > .duM > .duRoom >.rule{
+		width:12%;
+		height:70%;
+		position:absolute;
+		right:0;
+		box-shadow:0px 0px 5px 1px blue;
+		overflow:hidden;
+	}
+	#life_game > .imgM > .duM > .duRoom >.rule > span{
+		overflow:hidden;
+		color:red;
+		
+	}
+	#life_game > .imgM > .duM > .duRoom >.rule > h4{
+		color:#fff;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	#life_game > .imgM > .duM > .duRoom > .rule > .ruleBg{
+		width:100%;
+		height:100%;
+		background:#f40;
+		opacity:0.3;
+		position:absolute;
+		top:0;
+		left:0;
+		border-radius:10px;
+
+	}
+	#life_game > .imgM > .duM > .duRoom > .historyOpen{
+		width:12%;
+		height:70%;
+		position:absolute;
+		right:13%;
+		box-shadow:0px 0px 5px 1px green;
+		overflow:hidden;
+	}
+	#life_game > .imgM > .duM > .duRoom > .historyOpen >h4{
+		color:green;
+		width:100%;
+		margin-top:1%;
+		text-align:center;
+		position:relative;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	#life_game > .imgM > .duM > .duRoom > .historyOpen >ul{
+		list-style:none;
+		width:100%;
+		height:100%;
+		position:relative;
+		overflow:hidden;
+		margin-top:-1.5%;
+	}
+
+	#life_game > .imgM > .duM > .duRoom > .historyOpen > ul > li{
+		width:80%;
+		position:absolute;
+		left:10%;
+		box-shadow:0px 0px 10px 1px red;
+		cursor:move;
+	}
+
+	#life_game > .imgM > .duM > .duRoom > .historyOpen > ul > li >span{
+		color:red;
+		margin-left:2%;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	#life_game > .navB{
+		width:100vmax;
+		height:10vmin;
+		position: absolute;
+		bottom:0;
+		background:green;
+		/*overflow: hidden;*/
+	}
+	#life_game > .navB > ul{
+		position: absolute;
+		list-style: none;
+		width:100%;
+		height:100%;
+		border:1px solid black;
+	}
+	#life_game > .navB > ul > li{
+		width:10%;
+		height:100%;
+		background:coral;
+		float: left;
+		position:relative;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space:nowrap;
+	}
+	#life_game > .navB > ul > li:hover{
+		opacity:0.8;
+	}
+	#life_game > .navB > ul > li > .du{
+		width:100%;
+		height:100%;
+		display:block;
+		margin-top:-5px;
+		cursor:pointer;
+	}
+	
+	#life_game > .navB > ul > li:nth-of-type(6) > span{
+		position:absolute;
+		top:65%;
+		left:45%;
+		color:green;
+	}
+	.addClassInputM{
+		background:red;
+		box-shadow:0px 0px 100px 1px yellow!important;
+		color:yellow!important;
+	}
+	#windowS{
+		position:absolute;
+		top:0;
+		left:0;
+		width:100vmax;
+		height:100vmin;
+		z-index: 1000;
+		display:none;
+	}
+	#windowS > .bg{
+		background:black;
+		width:100%;
+		height:100%;
+		position:absolute;
+		opacity:0.5;
+	}
+	#windowS > .content{
+		width:30%;
+		height:30%;
+		position:absolute;
+		top:18%;
+		left:35%;
+		border-radius:10px;
+		background:black;
+		text-align:center;
+		line-height:1200%;
+	}
+	#windowS > .content > h3{
+		width:15%;
+		height:15%;
+		background:red;
+		color:#fff;
+		position:absolute;
+		bottom:10%;
+		text-align:center;
+		line-height:180%;
+		cursor:pointer;
+		border-radius:10px;
+		box-shadow:0px 0px 100px 10px red;
+	}
+	#windowS > .content > h3:nth-of-type(1){
+		left:61%;
+	}
+	#windowS > .content > h3:nth-of-type(2){
+		left:25%;
+	}
+	#windowS > .content > span{
+		color:red;
+		box-shadow:0px 0px 50px 1px blue;
+		border-radius:10px;
+	}
+	#windowS > .content > .img{
+		width:20%;
+		height:35%;
+		right:1%;
+		display:block;
+		position:absolute;
+		background:url("img/girl.jpg")no-repeat ;
+		background-size:100% 100%;
+		border-radius:20px;
+		box-shadow:0px 0px 50px 1px black;
+	}
+	/*输赢确定再战赌场弹窗*/
+	#reDo{
+		position:absolute;
+		top:0;
+		left:0;
+		width:100vmax;
+		height:100vmin;
+		z-index: 100;
+		overflow:hidden;
+		display:none;
+	}
+	#reDo > .bg{
+		background:black;
+		width:100%;
+		height:100%;
+		position:absolute;
+		opacity:0.5;
+		overflow: hidden
+	}
+	#reDo > .content{
+		width:50%;
+		height:50%;
+		position:absolute;
+		top:18%;
+		left:26%;
+		background:black;
+		outline:2px groove red;
+	}
+	#reDo > .content > h1{
+		width:30%;
+		height:15%;
+		background:red;
+		color:#fff;
+		position:absolute;
+		bottom:10%;
+		text-align:center;
+		line-height:160%;
+		cursor:pointer;
+		border-radius:10px;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+	}
+	#reDo > .content > h1:nth-of-type(1){
+		left:60%;
+		text-align:center;
+		box-shadow:0px 0px 10px 1px yellow;
+	}
+	#reDo > .content > h1:nth-of-type(1):hover{
+		box-shadow:0px 0px 100px 10px yellow;
+	}
+	#reDo > .content > h1:nth-of-type(2){
+		left:10.5%;
+		text-align:center;
+		box-shadow:0px 0px 10px 1px #ccc;
+	}
+	#reDo > .content > h1:nth-of-type(2):hover{
+		box-shadow:0px 0px 50px 1px #ccc;
+	}
+	#reDo > .content > span{
+		top:40%;
+		position:absolute;
+		left:41%;
+		color:yellow;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+	}
+	#reDo > .content > .img{
+		width:100%;
+		height:100%;
+		right:1%;
+		display:block;
+		position:absolute;
+		top:0;
+		left:0;
+		background:url("img/girl.jpg")no-repeat ;
+		background-size:100% 100%;
+		border-radius:20px;
+		box-shadow:0px 0px 50px 1px black;
+		border-radius:100px;
+	}
+	#reDo > .content >p{
+		width:30%;
+		height:7%;
+		color:red;
+		position:absolute;
+		top:1%;
+		right:1%;
+		z-index: 5;
+		text-align:center;
+		border-radius:20px;
+	}
+	#reDo > .content > p > span{
+		color:yellow;
+	}
+	#reDo > .content > p > span:nth-of-type(1){
+		box-shadow:0px 0px 50px 1px yellow;
+	}
+	#life_game > .uptoyou{
+		width:100%;
+		position:absolute;
+		bottom:10%;
+		text-align:center;
+		color:#fff;
+		z-index:10001;
+		display:none;
+	}
+	#life_game > .uptoyou span{
+		color:red;
+		font-size:1.5rem;
+	}
+	
+	</style>
+</head>
+<body>
+<!-- 声音控制 -->
+	<div id="audio_button">音关</div>
+	<div id="reDo">
+		
+		<div class="bg"></div>
+		<div class="content">
+			<p>
+				余额:<span>20000</span><span>金</span>
+			</p>
+			<div class="img" title="世事难料"></div>
+			<span>
+				<span>恭喜您赢了</span><span>1000</span>金
+			</span>
+			<h1>再战赌场</h1>
+			<h1>隐忍退去</h1>
+	</div>
+
+	</div>
+	<div id=life_over>
+		<div class="uptoyou_l">
+			<h1>恭喜您获得命运之神刮奖卡</h1>
+			<div class="uptoyou_can">
+				<canvas width="700px" height="300px" class="uptoyou_amazing"></canvas>
+			</div>
+	
+			<button class="uptoyou_repaint">领取奖卡</button>
+			<button class="uptoyou_repaintL">退出</button>
+		</div>
+		<span></span>
+		<p></p>
+		<div class="start">go</div>
+		<div class="OverGet">
+			<span></span>
+		</div>
+
+		<div class="overLife">
+			<span>the life has gone</span>
+		</div>
+	</div>
+	<div id="life_game">
+		<!-- 倒计时进入随机事件 -->
+		<div class="uptoyou">
+			<span>100</span>s&nbsp;后产生随机事件<i style="color:yellow">(年税0到90%随机&nbsp;年消费2000金)</i>
+		</div>
+		<div class="lifeTime">
+			剩余寿命:<span>100</span>&nbsp;<span>年</span>
+		</div>
+		<div class="money">
+			<img src="img/logoM.png" alt="">
+			<span>33333</span>&nbsp;<span>金</span>
+		</div>
+		<div class="imgM">
+			<!-- 游戏全景图 -->
+			<img class="imgFir" src="img/gameM.png" alt="">
+			<!-- 赌场标识 -->
+			<div class="wordFir">赌场</div>
+			<!-- 赌场弹窗 -->
+			<div class="duM">
+				<!-- 作为赌场的背景 -->
+				<div class="bgB"></div>
+				<div class="duRoom">
+				<!-- 获得多少钱 -->
+					<div class="getM">
+						<h3>喜获:</h3>
+						<span>1000</span>&nbsp;&nbsp;
+						<span>金</span>
+					</div>
+
+					<div class="time">
+						<span>离开奖剩余时间:</span>
+						<span>?</span>
+						<span>秒</span>
+					</div>
+					<!-- 卡通背景 -->
+					<div class="katong">
+
+					</div>
+					<div class="end">恭喜你中奖啦！</div>
+					<!-- 关闭赌场 -->
+					<input type="button" class="back" value="退出赌场">
+
+					<div class="personM">
+						<div class="theEnd">
+							<span>豹子</span>
+						</div>
+						<img class="person" src="img/gif.gif" alt="">
+						<ul>
+							<div></div>
+							<p>欢迎来到人生赌场</p>
+							<li><img src="img/touzi.png" alt=""></li>
+							<li><img src="img/touzi.png" alt=""></li>
+							<li><img src="img/touzi.png" alt=""></li>
+						</ul>
+					</div>
+				<!-- 赌界面中间部分 -->
+					<div class="openT">
+						<span>敬请期待...</span>
+						<div class="top">
+						   <img src="img/6.png" alt="">
+						   <img src="img/6.png" alt="">
+						   <img src="img/6.png" alt="">
+						</div>
+
+						<div class="bottom">
+							<span>6</span>
+							<span>6</span>
+							<span>6</span>
+						</div>
+					</div>
+					<!-- 赌场底部输入金额部分 -->
+					<div class="inputM">
+						<div class="choose">
+							<span>大</span>
+							<span>小</span>
+							<span>豹子</span>
+						</div>
+						<p>
+							<i class="warn">
+							 	您已押注:<span>100000000000</span>
+							</i>
+							<input class="fir" type="text" placeholder="请输入押注金额" maxlength="12">
+							&nbsp;<span>金</span>
+							<input class="sec" type="button" value="确定押注">
+						</p>
+					</div>
+
+					<div class="rule" title="1、骰子点加和小于11为小;2、骰子点加和大于10小于18为大;3、骰子点相同为豹子;4、豹子以一赔23！大小以一赔一！5、1金=50元人民币！">
+					    <div class="ruleBg"></div>
+						<h4>赌场规则:</h3><br>
+						<span>1、骰子点加和小于11为小;</span><br><br>
+						<span>2、骰子点加和大于10小于18为大;</span><br><br>
+						<span>3、骰子点相同为豹子</span><br><br>
+						<span>4、豹子以一赔23！大小以一赔一！</span>
+						<br>
+						<br>
+						<span>5、1金=50元人民币！</span>
+					</div>
+					<!-- 历史开奖记录 -->
+					<div class="historyOpen">
+						<h4>历史开奖记录</h4><br>
+						<ul>
+							<li>
+							</li>
+						</ul>
+						
+					
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="navB">
+			<ul>
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+				
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+					<span>赌场</span>
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+				
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+				<li>
+					<img class="du" src="img/du.png" alt="">
+				</li>
+
+			</ul>
+			
+		</div>
+	</div>
+	
+	<div id="windowS">
+		<div class="bg"></div>
+		<div class="content">
+			<div class="img" title="世事难料"></div>
+			<span>亲！！您还没下注呢，赶快吧</span>
+			<h3>确定</h3>
+			<h3>取消</h3>
+			
+		</div>
+	</div>
+
+	<audio id="audio" src="" autoplay="autoplay" loop="loop"></audio>
+	<audio id="lifeProgress" src="audio/child.mp3" autoplay="autoplay" loop="loop"></audio>
+	<script src="js/index.js">
+
+	</script>
+</body>
+</html>
